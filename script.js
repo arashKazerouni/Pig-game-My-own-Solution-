@@ -20,8 +20,12 @@ currentScore = 0;
 function switchPlayer() {
   if (activePlayer === 0) {
     activePlayer = 1;
+    player1El.classList.add('player--active');
+    player0El.classList.remove('player--active');
   } else {
     activePlayer = 0;
+    player1El.classList.remove('player--active');
+    player0El.classList.add('player--active');
   }
   currentScore = 0;
   current1El.innerHTML = currentScore;
@@ -34,6 +38,9 @@ btnRoll.onclick = () => {
   const randomNumber = Math.trunc(Math.floor(Math.random() * 6) + 1);
   diceEl.src = `http://127.0.0.1:5500/dice-${randomNumber}.png`;
   randomNumber === 1 ? switchPlayer() : (currentScore += randomNumber);
-  if (activePlayer === 0) current0El.innerHTML = currentScore;
-  if (activePlayer === 1) current1El.innerHTML = currentScore;
+  if (activePlayer === 0) {
+    current0El.innerHTML = currentScore;
+  } else {
+    current1El.innerHTML = currentScore;
+  }
 };

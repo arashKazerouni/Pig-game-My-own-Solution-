@@ -12,13 +12,22 @@ const btnRoll = document.querySelector('.btn--roll');
 const btnHold = document.querySelector('.btn--hold');
 
 let scores, currentScore, activePlayer, playing, winningScore;
+winningScore = 20;
 
 // initialize the game state
-activePlayer = 0;
-currentScore = 0;
-scores = [0, 0];
-playing = true;
-winningScore = 10;
+const init = () => {
+  activePlayer = 0;
+  currentScore = 0;
+  scores = [0, 0];
+  playing = true;
+  score0El.textContent = 0;
+  score1El.textContent = 0;
+  player0El.classList.remove('player--winner');
+  player1El.classList.remove('player--winner');
+  player0El.classList.add('player--active');
+  player1El.classList.remove('player--active');
+};
+init();
 // function to switch between players
 function switchPlayer() {
   if (activePlayer === 0) {
@@ -66,4 +75,9 @@ btnHold.onclick = () => {
     }
     switchPlayer();
   }
+};
+
+// Reseting the Game
+btnNew.onclick = () => {
+  init();
 };

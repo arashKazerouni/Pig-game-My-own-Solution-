@@ -11,7 +11,7 @@ const btnNew = document.querySelector('.btn--new');
 const btnRoll = document.querySelector('.btn--roll');
 const btnHold = document.querySelector('.btn--hold');
 
-let scores, currentScore, activePlayer, playing;
+let scores, currentScore, activePlayer, playing, winningScore;
 
 // initialize the game state
 activePlayer = 0;
@@ -37,26 +37,33 @@ function switchPlayer() {
 
 // Click on Roll Dice
 btnRoll.onclick = () => {
-  // Roll dice
-  const randomNumber = Math.trunc(Math.floor(Math.random() * 6) + 1);
-  diceEl.src = `http://127.0.0.1:5500/dice-${randomNumber}.png`;
-  // Add to Current Score
-  randomNumber === 1 ? switchPlayer() : (currentScore += randomNumber);
-  activePlayer === 0
-    ? (current0El.innerHTML = currentScore)
-    : (current1El.innerHTML = currentScore);
+  if (playing) {
+    // Roll dice
+    const randomNumber = Math.trunc(Math.floor(Math.random() * 6) + 1);
+    diceEl.src = `http://127.0.0.1:5500/dice-${randomNumber}.png`;
+    // Add to Current Score
+    randomNumber === 1 ? switchPlayer() : (currentScore += randomNumber);
+    activePlayer === 0
+      ? (current0El.innerHTML = currentScore)
+      : (current1El.innerHTML = currentScore);
+  }
 };
 // Click on Hold Btn
 btnHold.onclick = () => {
-  const currentPlayer = document.querySelector(`.player--${activePlayer}`);
-  scores[activePlayer] += currentScore;
-  score0El.innerHTML = scores[0];
-  score1El.innerHTML = scores[1];
-
-  if (scores[activePlayer] < winningScore) {
-  } else {
-    currentPlayer.classList.add('player--winner');
-    playing = false;
+  if (playing) {
+    // Adding Current Scores to Total
+    const currentPlayerEl = document.querySelector(`.player--${activePlayer}`);
+    const currentPlayerScore = document.querySelector(
+      `#score--${activePlayer}`
+    );
+    scores[activePlayer] += currentScore;
+    currentPlayerScore.textContent = scores[activePlayer];
+    currentScore = 0;
+    // Finish the Game
+    if (scores[activePlayer] >= winningScore) {
+      playing = false;
+      currentPlayerEl.classList.add('player--winner');
+    }
     switchPlayer();
   }
 };
